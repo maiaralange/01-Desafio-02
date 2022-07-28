@@ -24,7 +24,6 @@ export interface MovieProps {
 }
 
 export function App() {
-  const [selectedGenreId, setSelectedGenreId] = useState(1);
   const [genres, setGenres] = useState<GenreResponseProps[]>([]);
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>(
@@ -37,26 +36,12 @@ export function App() {
     });
   }, []);
 
-  useEffect(() => {
-    api
-      .get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`)
-      .then((response) => {
-        setMovies(response.data);
-      });
-
-    api
-      .get<GenreResponseProps>(`genres/${selectedGenreId}`)
-      .then((response) => {
-        setSelectedGenre(response.data);
-      });
-  }, [selectedGenreId]);
-
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar
         genres={genres}
-        selectedGenreId={selectedGenreId}
-        setSelectedGenreId={setSelectedGenreId}
+        setMovies={setMovies}
+        setSelectedGenre={setSelectedGenre}
       />
       <Content movies={movies} selectedGenre={selectedGenre} />
     </div>
